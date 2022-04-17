@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import StepOtp from "./Steps/StepOtp";
-import StepPhoneEmail from "./Steps/StepPhoneEmail";
+import StepPhoneEmail from "./Steps/StepPhoneEmail/StepPhoneEmail";
 
 const steps = {
   1: StepPhoneEmail,
@@ -15,9 +15,9 @@ const Authenticate = () => {
     setStep(step + 1);
   };
   return (
-    <div>
+    <>
       <Step onNext={onNext} />
-    </div>
+    </>
   );
 };
 

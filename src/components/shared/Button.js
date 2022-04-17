@@ -4,12 +4,12 @@ const Button = ({ text, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="flex w-[224px] h-[42px] bg-[#1E266D] rounded-full items-center justify-evenly font-Rubik font-medium text-sm mt-14"
+      className="flex px-5 h-[42px] bg-[#1E266D] rounded-full items-center justify-evenly font-Rubik font-medium text-sm mt-10 "
     >
       {text}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5"
+        class="h-5 w-5 ml-3"
         viewBox="0 0 20 20"
         fill="currentColor"
       >
