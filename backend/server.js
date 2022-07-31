@@ -9,6 +9,11 @@ app.use(router);
 
 app.get("/", (req, res) => res.send("Hello world"));
 
-app.listen(PORT, () =>
+const server = app.listen(PORT, () =>
   console.log(`Server listening on http://localhost:${PORT}`)
 );
+
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Logged Error ${err}`);
+  server.close(() => process.exit(1));
+});

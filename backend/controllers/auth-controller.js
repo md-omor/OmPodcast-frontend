@@ -1,3 +1,4 @@
+const hashService = require("../services/hash-service");
 const otpService = require("../services/otp-service");
 
 class AuthController {
@@ -12,10 +13,17 @@ class AuthController {
 
     const otp = await otpService.generateOtp();
 
+    // Hash
+    const ttl = 1000 * 60 * 2; // 2 min
+    const expires = Date.now() + ttl;
+    const data = `${phone}.${otp}.${expires}`;
+    const hash = await hashService.hashOtp(data);
+
     try {
       res.json({
         phone,
         otp,
+        hash,
       });
     } catch (err) {
       console.log(err);
