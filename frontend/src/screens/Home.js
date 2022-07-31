@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/shared/Button";
 import Card from "../components/shared/Card";
 
@@ -25,11 +25,11 @@ const Home = () => {
             <p className="text-[#0077FF] font-Rubik font-medium text-sm mr-2 cursor-pointer">
               Have an invite link?
             </p>
-            <Link to="/login">
+            {/* <Link to="/login">
               <p className="text-[#0077FF] font-Rubik font-medium text-sm cursor-pointer">
                 Sign in
               </p>
-            </Link>
+            </Link> */}
           </div>
         </Card>
       </div>
