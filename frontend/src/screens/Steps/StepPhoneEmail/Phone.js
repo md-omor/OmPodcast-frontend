@@ -7,6 +7,8 @@ import { sendOtp } from "../../../http";
 const Phone = ({ onNext }) => {
   const [phoneNumber, setphoneNumber] = useState("");
 
+  // console.log({ phone: phoneNumber });
+
   const submit = async () => {
     // server request
     const res = await sendOtp({ phone: phoneNumber });
