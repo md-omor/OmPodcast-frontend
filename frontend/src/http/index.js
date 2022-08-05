@@ -18,3 +18,4 @@ import axios from "axios";
 // export default api;
 
 export const sendOtp = (data) => axios.post(`/api/send-otp`, data);
+export const verifyOtp = (data) => axios.post(`/api/verify-otp`, data);

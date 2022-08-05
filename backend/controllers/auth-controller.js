@@ -2,6 +2,7 @@ const hashService = require("../services/hash-service");
 const otpService = require("../services/otp-service");
 const tokenService = require("../services/token-service");
 const userService = require("../services/user-service");
+const UserDto = require("../dtos/user-dto");
 
 class AuthController {
   async sendOtp(req, res) {
@@ -59,16 +60,14 @@ class AuthController {
     }
 
     let user;
-    // let accessToken;
-
     try {
-      user = userService.findUser({ phone });
+      user = await userService.findUser({ phone });
       if (!user) {
-        user = await userService.creatUser({ phone });
+        user = await userService.createUser({ phone });
       }
-    } catch (error) {
-      console.log(error, "");
-      res.status(500).json({ message: "Database Error" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Db error" });
     }
 
     //Token
@@ -78,12 +77,21 @@ class AuthController {
       activated: false,
     });
 
+    await tokenService.storeRefreshToken(refreshToken, user._id);
+
     res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
     });
 
-    res.json({ accessToken });
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    const userDto = new UserDto(user);
+
+    res.json({ user: userDto, auth: true });
   }
 }
 

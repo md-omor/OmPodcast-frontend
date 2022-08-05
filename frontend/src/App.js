@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navigation from "./components/shared/Navigation";
 import Activate from "./screens/Activate";
@@ -6,11 +7,6 @@ import Home from "./screens/Home";
 import Rooms from "./screens/Rooms";
 // import Login from "./screens/Login";
 // import Register from "./screens/Register";
-
-const isAuth = false;
-const user = {
-  activated: false,
-};
 
 function App() {
   return (
@@ -58,6 +54,8 @@ function App() {
 }
 
 const GuestRoute = ({ children }) => {
+  const { isAuth } = useSelector((state) => state.auth);
+
   const location = useLocation();
   return isAuth ? (
     <Navigate to="/rooms" state={{ from: location }} replace />
@@ -67,6 +65,8 @@ const GuestRoute = ({ children }) => {
 };
 
 const SemiProtectedRoute = ({ children }) => {
+  const { user, isAuth } = useSelector((state) => state.auth);
+
   const location = useLocation();
   return !isAuth ? (
     <Navigate to="/" state={{ from: location }} replace />
@@ -78,6 +78,8 @@ const SemiProtectedRoute = ({ children }) => {
 };
 
 const ProtectedRoute = ({ children }) => {
+  const { user, isAuth } = useSelector((state) => state.auth);
+
   const location = useLocation();
   return !isAuth ? (
     <Navigate to="/" state={{ from: location }} replace />
