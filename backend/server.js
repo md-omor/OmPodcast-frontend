@@ -2,14 +2,15 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const router = require("./routes");
 
 const PORT = process.env.PORT || 5500;
 
-app.use(express.json());
+app.use(cookieParser());
+app.use(express.json({ limit: "40mb" }));
 app.use(router);
 app.use(
   cors({
