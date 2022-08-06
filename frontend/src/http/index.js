@@ -19,3 +19,4 @@ import axios from "axios";
 
 export const sendOtp = (data) => axios.post(`/api/send-otp`, data);
 export const verifyOtp = (data) => axios.post(`/api/verify-otp`, data);
+export const activate = (data) => axios.post(`/api/activate`, data);

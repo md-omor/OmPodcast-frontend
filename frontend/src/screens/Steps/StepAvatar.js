@@ -1,16 +1,33 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/shared/Button";
 import Card from "../../components/shared/Card";
-// import { setName } from "../../store/activateSlice";
+import { activate } from "../../http";
+import { setAvatar } from "../../store/activateSlice";
 
 const StepAvatar = ({ onNext }) => {
-  const { name } = useSelector((state) => state.activate);
+  const { name, avatar } = useSelector((state) => state.activate);
   const [image, setImage] = useState("/assets/avatar.svg");
-  const nextStep = () => {};
+  const dispatch = useDispatch();
 
   const captureImage = (e) => {
     const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      console.log(reader.result);
+      setImage(reader.result);
+      dispatch(setAvatar(reader.result));
+    };
+  };
+
+  const submit = async () => {
+    try {
+      const { data } = await activate({ name, avatar });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -42,7 +59,7 @@ const StepAvatar = ({ onNext }) => {
             </label>
           </div>
 
-          <Button text="Next" onClick={nextStep} />
+          <Button text="Next" onClick={submit} />
         </Card>
       </div>
     </div>
