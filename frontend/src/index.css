@@ -7,6 +7,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: #121212;
   color: #fff;
@@ -23,6 +27,11 @@ body {
   border: 3px solid #0077ff;
   margin: 0 20px;
   margin-right: 10px;
+}
+
+.avatars img:last-child {
+  top: 20px;
+  left: 20px;
 }
 
 @keyframes spin {
