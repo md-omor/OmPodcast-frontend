@@ -4,6 +4,7 @@ import Button from "../../components/shared/Button";
 import Card from "../../components/shared/Card";
 import { activate } from "../../http";
 import { setAvatar } from "../../store/activateSlice";
+import { setAuth } from "../../store/authSlice";
 
 const StepAvatar = ({ onNext }) => {
   const { name, avatar } = useSelector((state) => state.activate);
@@ -24,6 +25,9 @@ const StepAvatar = ({ onNext }) => {
   const submit = async () => {
     try {
       const { data } = await activate({ name, avatar });
+      if (data.auth) {
+        dispatch(setAuth(data));
+      }
       console.log(data);
     } catch (error) {
       console.log(error);

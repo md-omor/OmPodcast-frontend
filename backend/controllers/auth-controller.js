@@ -94,6 +94,70 @@ class AuthController {
 
     res.json({ user: userDto, auth: true });
   }
+
+  async refresh(req, res) {
+    //get refresh token from cookie
+
+    const { refreshToken: refreshTokenFromCookie } = req.cookies;
+
+    // Check if token is valid
+    let userData;
+    try {
+      userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ message: "Invalid refresh token" });
+    }
+
+    // check if token is in db
+    try {
+      const token = await tokenService.findRefreshToken(
+        userData._id,
+        refreshTokenFromCookie
+      );
+
+      if (!token) {
+        return res.status(401).json({ message: "Invalid refresh token" });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal Error" });
+    }
+
+    // check if valid user
+    const user = await userService.findUser({ _id: userData._id });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    //  Generate new tokens
+    const { accessToken, refreshToken } = tokenService.generateTokens({
+      _id: userData._id,
+    });
+
+    //  update refresh token
+    try {
+      await tokenService.updateRefreshToken(refreshToken, userId);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal Error" });
+    }
+
+    // put in cookie
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    // response
+    const userDto = new UserDto(user);
+    res.json({ user: userDto, auth: true });
+  }
 }
 
 module.exports = new AuthController();

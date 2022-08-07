@@ -18,6 +18,7 @@ app.use(
     credentials: true,
   })
 );
+app.use("/storage", express.static("storage"));
 
 app.get("/", (req, res) => res.send("Welcome to md omor Podcast API"));
 
