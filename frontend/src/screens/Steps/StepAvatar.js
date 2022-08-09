@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/shared/Button";
 import Card from "../../components/shared/Card";
+import Loader from "../../components/shared/Loader";
 import { activate } from "../../http";
 import { setAvatar } from "../../store/activateSlice";
 import { setAuth } from "../../store/authSlice";
@@ -9,6 +10,8 @@ import { setAuth } from "../../store/authSlice";
 const StepAvatar = ({ onNext }) => {
   const { name, avatar } = useSelector((state) => state.activate);
   const [image, setImage] = useState("/assets/avatar.svg");
+  const [loading, setLoading] = useState(false);
+  const [mounted, setmounted] = useState(false);
   const dispatch = useDispatch();
 
   const captureImage = (e) => {
@@ -23,16 +26,29 @@ const StepAvatar = ({ onNext }) => {
   };
 
   const submit = async () => {
+    if (!name || !avatar) return;
+    setLoading(true);
     try {
       const { data } = await activate({ name, avatar });
       if (data.auth) {
-        dispatch(setAuth(data));
+        if (!mounted) {
+          dispatch(setAuth(data));
+        }
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setmounted(true);
+    };
+  }, []);
+
+  if (loading) return <Loader message="Activation in progress..." />;
 
   return (
     <div className="container mx-auto h-[80vh]">

@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import Loader from "./components/shared/Loader";
 import Navigation from "./components/shared/Navigation";
+import { useLoadingWithRefresh } from "./hooks/useLoadingWithRefresh";
 import Activate from "./screens/Activate";
 import Authenticate from "./screens/Authenticate";
 import Home from "./screens/Home";
@@ -9,7 +11,11 @@ import Rooms from "./screens/Rooms";
 // import Register from "./screens/Register";
 
 function App() {
-  return (
+  // call refresh endpoint
+  const { loading } = useLoadingWithRefresh();
+  return loading ? (
+    <Loader message="Activation in progress ..." />
+  ) : (
     <>
       <Navigation />
       <Routes>

@@ -11,3 +11,22 @@ body {
   background: #121212;
   color: #fff;
 }
+
+.spiner {
+  margin-bottom: 20px;
+  animation: spin 1s ease-in-out infinite;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0077ff;
+  margin: 0 20px;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

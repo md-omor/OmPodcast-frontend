@@ -96,53 +96,43 @@ class AuthController {
   }
 
   async refresh(req, res) {
-    //get refresh token from cookie
-
+    // get refresh token from cookie
     const { refreshToken: refreshTokenFromCookie } = req.cookies;
-
-    // Check if token is valid
+    // check if token is valid
     let userData;
     try {
       userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
-    } catch (error) {
-      console.log(error);
-      return res.status(401).json({ message: "Invalid refresh token" });
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid Token" });
     }
-
-    // check if token is in db
+    // Check if token is in db
     try {
       const token = await tokenService.findRefreshToken(
         userData._id,
         refreshTokenFromCookie
       );
-
       if (!token) {
-        return res.status(401).json({ message: "Invalid refresh token" });
+        return res.status(401).json({ message: "Invalid token" });
       }
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Internal Error" });
+    } catch (err) {
+      return res.status(500).json({ message: "Internal error" });
     }
-
     // check if valid user
     const user = await userService.findUser({ _id: userData._id });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "No user" });
     }
-
-    //  Generate new tokens
-    const { accessToken, refreshToken } = tokenService.generateTokens({
+    // Generate new tokens
+    const { refreshToken, accessToken } = tokenService.generateTokens({
       _id: userData._id,
     });
 
-    //  update refresh token
+    // Update refresh token
     try {
-      await tokenService.updateRefreshToken(refreshToken, userId);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Internal Error" });
+      await tokenService.updateRefreshToken(userData._id, refreshToken);
+    } catch (err) {
+      return res.status(500).json({ message: "Internal error" });
     }
-
     // put in cookie
     res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -153,10 +143,19 @@ class AuthController {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
     });
-
     // response
     const userDto = new UserDto(user);
     res.json({ user: userDto, auth: true });
+  }
+
+  async logout(req, res) {
+    const { refreshToken } = req.cookies;
+    // delete refresh token from db
+    await tokenService.removeToken(refreshToken);
+    // delete cookies
+    res.clearCookie("refreshToken");
+    res.clearCookie("accessToken");
+    res.json({ user: null, auth: false });
   }
 }
 
