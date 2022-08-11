@@ -23,31 +23,35 @@ const Navigation = () => {
         <Link to="/">
           <h1 className="font-Oxanium font-bold text-2xl">OMPodcast</h1>
         </Link>
-        <div className="flex items-center">
-          {isAuth && (
-            <>
-              {" "}
-              <h3>{user && user.name}</h3>
-              <Link to="/">
-                <img
-                  className="avatar"
-                  src={user && user.avatar}
-                  width="40"
-                  height="40"
-                  alt="avatar"
-                />
-              </Link>
-            </>
-          )}
-          {isAuth && (
-            <button
-              className="border-none outline-none cursor-pointer"
-              onClick={logoutUser}
-            >
-              <img src="/assets/logout.png" alt="logout" />
-            </button>
-          )}
-        </div>
+        {isAuth && (
+          <div className="flex items-center">
+            {isAuth && (
+              <>
+                {" "}
+                <h3>{user && user?.name}</h3>
+                <Link to="/">
+                  <img
+                    className="avatar"
+                    src={
+                      user?.avatar ? user?.avatar : "assets/monkey-avatar.png"
+                    }
+                    width="40"
+                    height="40"
+                    alt="avatar"
+                  />
+                </Link>
+              </>
+            )}
+            {isAuth && (
+              <button
+                className="border-none outline-none cursor-pointer"
+                onClick={logoutUser}
+              >
+                <img src="/assets/logout.png" alt="logout" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,11 +1,26 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const RoomCard = ({ room }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-[#1d1d1d] p-5 rounded-3xl cursor-pointer mb-8 mr-6 w-[350px]">
+    <div
+      onClick={() =>
+        navigate(`/room/${room.id}`, {
+          replace: true,
+        })
+      }
+      className="bg-[#1d1d1d] p-5 rounded-3xl cursor-pointer mb-8 mr-6 w-[350px]"
+    >
       <h3 className="font-bold font-Oxanium">{room.topic}</h3>
-      <div className="ml-5">
-        <div className="flex items-center relative mx-5 my-4 avatars">
+
+      <div
+        className={`flex items-center relative ml-0 mr-5 my-4 ${
+          room.speakers.length === 1 ? "speakers" : ""
+        }`}
+      >
+        <div className="avatars">
           {room.speakers.map((speaker) => (
             <img
               src={speaker.avatar}
@@ -15,9 +30,9 @@ const RoomCard = ({ room }) => {
             />
           ))}
         </div>
-        <div className="ml-[100px]">
+        <div className="ml-[100px] names">
           {room.speakers.map(({ name, id }) => (
-            <div className="flex items-center " key={id}>
+            <div className="flex items-center" key={id}>
               <span className="pb-1 inline-block mr-1 font-medium font-Oxanium">
                 {name}
               </span>

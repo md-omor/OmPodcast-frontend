@@ -9,7 +9,11 @@ const Email = ({ onNext }) => {
     <div className="container mx-auto h-[80vh]">
       <div className="w-full flex justify-center items-center ">
         <Card title="Enter your email id" icon="email">
-          <TextInput value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextInput
+            fullwidth="false"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Button text="Next" onClick={onNext} />
           <p className="text-[#C4C5C5] font-Jost font-medium text-sm mt-5 w-[301px] text-center">
             By entering your email, you’re agreeing to our Terms of Service and

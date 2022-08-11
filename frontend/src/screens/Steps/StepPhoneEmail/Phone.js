@@ -30,6 +30,7 @@ const Phone = ({ onNext }) => {
           <TextInput
             value={phoneNumber}
             onChange={(e) => setphoneNumber(e.target.value)}
+            fullwidth="false"
           />
           <Button text="Next" onClick={submit} />
           <p className="text-[#C4C5C5] font-Jost font-medium text-sm mt-5 w-[301px] text-center">

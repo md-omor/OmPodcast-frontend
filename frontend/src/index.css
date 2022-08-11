@@ -34,6 +34,14 @@ body {
   left: 20px;
 }
 
+.speakers .avatars img {
+  position: initial;
+}
+
+.speakers .names {
+  margin-left: 20px;
+}
+
 @keyframes spin {
   100% {
     transform: rotate(360deg);

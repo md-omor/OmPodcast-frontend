@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../store/authSlice";
 
-const base_url = "http://localhost:5500";
-console.log(base_url);
-
 export function useLoadingWithRefresh() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();

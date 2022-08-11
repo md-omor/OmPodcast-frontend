@@ -25,6 +25,7 @@ const StepName = ({ onNext }) => {
           <TextInput
             value={fullName}
             onChange={(e) => setfullName(e.target.value)}
+            fullwidth="false"
           />
           <p className="text-[#C4C5C5] font-Jost font-medium text-sm mt-5 w-[301px] text-center">
             People use real names at codershouse :)

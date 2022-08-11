@@ -6,6 +6,7 @@ import { useLoadingWithRefresh } from "./hooks/useLoadingWithRefresh";
 import Activate from "./screens/Activate";
 import Authenticate from "./screens/Authenticate";
 import Home from "./screens/Home";
+import Room from "./screens/Room";
 import Rooms from "./screens/Rooms";
 // import Login from "./screens/Login";
 // import Register from "./screens/Register";
@@ -49,6 +50,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Rooms />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/room/:id"
+          element={
+            <ProtectedRoute>
+              <Room />
             </ProtectedRoute>
           }
         />

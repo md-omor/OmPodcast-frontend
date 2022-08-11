@@ -1,114 +1,125 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddRoomModal from "../components/AddRoomModal";
 import RoomCard from "../components/RoomCard";
+import { getAllRooms } from "../http";
 
-const rooms = [
-  {
-    id: 1,
-    topic: "Which framework best for frontend ?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 3,
-    topic: "What’s new in machine learning?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 4,
-    topic: "Why people use stack overflow?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 5,
-    topic: "Artificial inteligence is the future?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 6,
-    topic: "Artificial inteligence is the future?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 7,
-    topic: "Artificial inteligence is the future?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/assets/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-];
+// const rooms = [
+//   {
+//     id: 1,
+//     topic: "Which framework best for frontend ?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+//   {
+//     id: 3,
+//     topic: "What’s new in machine learning?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+//   {
+//     id: 4,
+//     topic: "Why people use stack overflow?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+//   {
+//     id: 5,
+//     topic: "Artificial inteligence is the future?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+//   {
+//     id: 6,
+//     topic: "Artificial inteligence is the future?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+//   {
+//     id: 7,
+//     topic: "Artificial inteligence is the future?",
+//     speakers: [
+//       {
+//         id: 1,
+//         name: "John Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//       {
+//         id: 2,
+//         name: "Jane Doe",
+//         avatar: "/assets/monkey-avatar.png",
+//       },
+//     ],
+//     totalPeople: 40,
+//   },
+// ];
 
 const Rooms = () => {
   const [showModal, setshowModal] = useState(false);
+  const [rooms, setrooms] = useState([]);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const { data } = await getAllRooms();
+      setrooms(data);
+      console.log(data);
+    };
+    fetchRooms();
+  }, []);
 
   const openModal = () => {
     setshowModal(true);
@@ -144,11 +155,11 @@ const Rooms = () => {
 
         <div className="flex justify-start flex-wrap mt-[60px]">
           {rooms.map((room) => (
-            <RoomCard ley={room.id} room={room} />
+            <RoomCard key={room.id} room={room} />
           ))}
         </div>
       </div>
-      {showModal && <AddRoomModal />}
+      {showModal && <AddRoomModal onClose={() => setshowModal(false)} />}
     </>
   );
 };

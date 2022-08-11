@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const base_url = "http://localhost:5500";
-console.log(base_url);
 
 const api = axios.create({
   baseURL: base_url,
@@ -17,6 +16,8 @@ export const sendOtp = (data) => axios.post(`/api/send-otp`, data);
 export const verifyOtp = (data) => axios.post(`/api/verify-otp`, data);
 export const activate = (data) => axios.post(`/api/activate`, data);
 export const logout = () => axios.post(`/api/logout`);
+export const createRoom = (data) => axios.post(`/api/rooms`, data);
+export const getAllRooms = () => axios.get(`/api/rooms`);
 
 // Interceptors
 api.interceptors.response.use(

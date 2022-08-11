@@ -27,7 +27,11 @@ const StepOtp = ({ onNext }) => {
     <div className="container mx-auto w-full h-[80vh]">
       <div className="flex items-center justify-center mt-24 flex-col ">
         <Card title="Enter the code we just texted you" icon="lock">
-          <TextInput value={otp} onChange={(e) => setotp(e.target.value)} />
+          <TextInput
+            fullwidth="false"
+            value={otp}
+            onChange={(e) => setotp(e.target.value)}
+          />
           <Button text="Next" onClick={submit} />
           <p className="text-[#C4C5C5] font-Jost font-medium text-sm mt-5 w-[301px] text-center">
             Didn’t receive? Tap to resend
