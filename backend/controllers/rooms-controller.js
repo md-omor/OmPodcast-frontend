@@ -25,6 +25,12 @@ class RoomsCntroller {
 
     return res.status(200).json(allRooms);
   }
+
+  async show(req, res) {
+    // const room = await roomService.getRoom(req.params.roomId);
+    const room = await roomService.getRoom(req.params.roomId);
+    return res.status(200).json(room);
+  }
 }
 
 module.exports = new RoomsCntroller();

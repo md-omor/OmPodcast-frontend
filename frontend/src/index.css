@@ -42,6 +42,14 @@ body {
   margin-left: 20px;
 }
 
+.roomPeopleWrap {
+  margin-top: 4rem;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  min-height: calc(100vh - 205px);
+  padding: 2rem;
+}
+
 @keyframes spin {
   100% {
     transform: rotate(360deg);

@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
-  avatar: "",
+  roomName: "",
+  // avatar: "",
 };
 
 export const roomSlice = createSlice({
   name: "rooms",
   initialState,
   reducers: {
-    getAllRooms: (state, action) => {},
+    getRoomsName: (state, action) => {
+      // const { roomName } = action.payload;
+      const { topic } = action.payload;
+      state.roomName = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setName, setAvatar } = roomSlice.actions;
+export const { getRoomsName } = roomSlice.actions;
 
 export default roomSlice.reducer;

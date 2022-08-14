@@ -18,6 +18,8 @@ export const activate = (data) => axios.post(`/api/activate`, data);
 export const logout = () => axios.post(`/api/logout`);
 export const createRoom = (data) => axios.post(`/api/rooms`, data);
 export const getAllRooms = () => axios.get(`/api/rooms`);
+// export const getRoom = (roomId) => axios.get(`/api/rooms/${roomId}}`);
+export const getRoom = (roomId) => axios.get(`/api/rooms/${roomId}`);
 
 // Interceptors
 api.interceptors.response.use(
