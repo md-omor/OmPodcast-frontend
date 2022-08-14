@@ -12,13 +12,21 @@ const Room = () => {
 
       {clients.map((client) => {
         return (
-          <div className="" key={client.id}>
+          <div
+            className="w-[90px] h-[90px] rounded-[50%] relative"
+            key={client.id}
+          >
             <audio
               ref={(instance) => provideRef(instance, client.id)}
               src=""
               controls
               autoPlay
             ></audio>
+            <img
+              src={client.avatar}
+              alt="avatar"
+              className="w-full h-full rounded-[50%]"
+            />
             <h1 className="">{client.name}</h1>
           </div>
         );

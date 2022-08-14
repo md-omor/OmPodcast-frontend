@@ -30,7 +30,7 @@ app.use("/storage", express.static("storage"));
 
 app.get("/", (req, res) => res.send("Welcome to md omor Podcast API"));
 
-// Sockets
+// Sockets;
 
 const socketUserMapping = {};
 
@@ -42,28 +42,76 @@ io.on("connection", (socket) => {
     socketUserMapping[socket.id] = user;
     // new map it's mean get clients from a specific roomId
     const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+
     // fetch all users to the rooms with sockets
-    const cc = clients.forEach((clientId) => {
+    clients.forEach((clientId) => {
       io.to(clientId).emit(ACTIONS.ADD_PEER, {
         peerId: socket.id,
         createOffer: false,
+        user,
+      });
+
+      // add my self to the list of peers
+      socket.emit(ACTIONS.ADD_PEER, {
+        peerId: clientId,
+        createOffer: true,
         user: socketUserMapping[clientId],
       });
     });
 
-    socket.emit(ACTIONS.ADD_PEER, {
-      peerId: children,
-      createOffer: true,
-    });
     socket.join(roomId);
-    console.log(cc);
     console.log(clients);
   });
 
-  // Handle really ice
-  socket.on(ACTIONS.REALY_SDP, ({ peerId, icecandidate }) => {
-    io.to(peerId).emit(ACTIONS.REALY - NINCE);
+  // Handle relay ice
+  socket.on(ACTIONS.RELAY_ICE, ({ peerId, icecandidate }) => {
+    io.to(peerId).emit(ACTIONS.ICE_CANDIDATE, {
+      peerId: socket.id,
+      icecandidate,
+    });
   });
+
+  // handle realy sdp (session descriptions)
+  socket.on(ACTIONS.RELAY_SDP, ({ peerId, sessionDescription }) => {
+    io.to(peerId).emit(ACTIONS.SESSION_DESCRIPTION, {
+      peerId: socket.id,
+      sessionDescription,
+    });
+  });
+
+  // Leaving the room
+  const leaveRoom = ({ roomId }) => {
+    const { rooms } = socket;
+
+    Array.from(rooms).forEach((roomId) => {
+      const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+
+      clients.forEach((clientId) => {
+        // io.to(clientId).emit(ACTIONS.REMOVE_PEER, {
+        //   peerId: socket.id,
+        //   userId: socketUserMapping[socket.id]?.id,
+        // });
+
+        io.to(clientId).emit(ACTIONS.REMOVE_PEER, {
+          peerId: socket.id,
+          userId: socketUserMapping[socket.id]?.id,
+        });
+
+        socket.emit(ACTIONS.REMOVE_PEER, {
+          peerId: clientId,
+          userId: socketUserMapping[clientId]?.id,
+        });
+      });
+
+      socket.leave(roomId);
+    });
+
+    delete socketUserMapping[socket.id];
+  };
+
+  socket.on(ACTIONS.LEAVE, leaveRoom);
+
+  socket.on("disconnecting", leaveRoom);
 });
 
 mongoose
