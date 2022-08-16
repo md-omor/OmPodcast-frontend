@@ -103,104 +103,104 @@ export const useWebRTC = (roomId, user) => {
       //     });
       //   };
 
-      //   // Add connection to peer connections track
-      //   localMediaStreams.current.getTracks().forEach((track) => {
-      //     connections.current[peerId].addTrack(
-      //       track,
-      //       localMediaStreams.current
-      //     );
-      //   });
+        // Add connection to peer connections track
+        localMediaStreams.current.getTracks().forEach((track) => {
+          connections.current[peerId].addTrack(
+            track,
+            localMediaStreams.current
+          );
+        });
 
-      //   // Create an offer if required
-      //   if (createOffer) {
-      //     const offer = await connections.current[peerId].createOffer();
+        // Create an offer if required
+        if (createOffer) {
+          const offer = await connections.current[peerId].createOffer();
 
-      //     // Set as local description
-      //     await connections.current[peerId].setLocalDescription(offer);
+          // Set as local description
+          await connections.current[peerId].setLocalDescription(offer);
 
-      //     // send offer to the server
-      //     socket.current.emit(ACTIONS.RELAY_SDP, {
-      //       peerId,
-      //       sessionDescription: offer,
-      //     });
-      //   }
-      // };
+          // send offer to the server
+          socket.current.emit(ACTIONS.RELAY_SDP, {
+            peerId,
+            sessionDescription: offer,
+          });
+        }
+      };
 
       // remove connection from the site
-      // const handleRemovePeer = async ({ peerId, userId }) => {
-      //   // Correction: peerID to peerId
-      //   if (connections.current[peerId]) {
-      //     connections.current[peerId].close();
-      //   }
+      const handleRemovePeer = async ({ peerId, userId }) => {
+        // Correction: peerID to peerId
+        if (connections.current[peerId]) {
+          connections.current[peerId].close();
+        }
 
-      //   delete connections.current[peerId];
-      //   delete audioElements.current[peerId];
-      //   setClients((list) => list.filter((c) => c.id !== userId));
-      // };
+        delete connections.current[peerId];
+        delete audioElements.current[peerId];
+        setClients((list) => list.filter((c) => c.id !== userId));
+      };
 
-      // const handleIceCandidate = async ({ peerId, icecandidate }) => {
-      //   if (icecandidate) {
-      //     connections.current[peerId].addIceCandidate(icecandidate);
-      //   }
-      // };
+      const handleIceCandidate = async ({ peerId, icecandidate }) => {
+        if (icecandidate) {
+          connections.current[peerId].addIceCandidate(icecandidate);
+        }
+      };
 
-      // const setRemoteMedia = async ({
-      //   peerId,
-      //   sessionDescription: remoteSessionDescription,
-      // }) => {
-      //   connections.current[peerId].setRemoteDescription(
-      //     new RTCSessionDescription(remoteSessionDescription)
-      //   );
+      const setRemoteMedia = async ({
+        peerId,
+        sessionDescription: remoteSessionDescription,
+      }) => {
+        connections.current[peerId].setRemoteDescription(
+          new RTCSessionDescription(remoteSessionDescription)
+        );
 
-      //   // If session descrition is offer then create an answer
-      //   if (remoteSessionDescription.type === "offer") {
-      //     const connection = connections.current[peerId];
+        // If session descrition is offer then create an answer
+        if (remoteSessionDescription.type === "offer") {
+          const connection = connections.current[peerId];
 
-      //     const answer = await connection.createAnswer();
-      //     connection.setLocalDescription(answer);
+          const answer = await connection.createAnswer();
+          connection.setLocalDescription(answer);
 
-      //     socket.current.emit(ACTIONS.RELAY_SDP, {
-      //       peerId,
-      //       sessionDescription: answer,
-      //     });
-      //   }
-      // };
+          socket.current.emit(ACTIONS.RELAY_SDP, {
+            peerId,
+            sessionDescription: answer,
+          });
+        }
+      };
 
       // mute functionality
-      // const handleSetMute = async (mute, userId) => {
-      //   const clientIdx = clientsRef.current
-      //     .map((client) => client.id)
-      //     .indexOf(userId);
-      //   const allConnectedClients = JSON.parse(
-      //     JSON.stringify(clientsRef.current)
-      //   );
-      //   if (clientIdx > -1) {
-      //     allConnectedClients[clientIdx].muted = mute;
-      //     setClients(allConnectedClients);
-      //   }
-      // };
+      const handleSetMute = async (mute, userId) => {
+        const clientIdx = clientsRef.current
+          .map((client) => client.id)
+          .indexOf(userId);
+        const allConnectedClients = JSON.parse(
+          JSON.stringify(clientsRef.current)
+        );
+        if (clientIdx > -1) {
+          allConnectedClients[clientIdx].muted = mute;
+          setClients(allConnectedClients);
+        }
+      };
 
-      // socket.current.on(ACTIONS.MUTE_INFO, ({ userId, isMute }) => {
-      //   handleSetMute(isMute, userId);
-      // });
+      socket.current.on(ACTIONS.MUTE_INFO, ({ userId, isMute }) => {
+        handleSetMute(isMute, userId);
+      });
 
-      // socket.current.on(ACTIONS.ADD_PEER, handleNewPeer);
-      // socket.current.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
-      // socket.current.on(ACTIONS.ICE_CANDIDATE, handleIceCandidate);
-      // socket.current.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia);
+      socket.current.on(ACTIONS.ADD_PEER, handleNewPeer);
+      socket.current.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
+      socket.current.on(ACTIONS.ICE_CANDIDATE, handleIceCandidate);
+      socket.current.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia);
 
-      // socket.current.on(ACTIONS.MUTE, ({ peerId, userId }) => {
-      //   handleSetMute(true, userId);
-      // });
+      socket.current.on(ACTIONS.MUTE, ({ peerId, userId }) => {
+        handleSetMute(true, userId);
+      });
 
-      // socket.current.on(ACTIONS.UN_MUTE, ({ peerId, userId }) => {
-      //   handleSetMute(false, userId);
-      // });
+      socket.current.on(ACTIONS.UN_MUTE, ({ peerId, userId }) => {
+        handleSetMute(false, userId);
+      });
 
-      // socket.current.emit(ACTIONS.JOIN, {
-      //   roomId,
-      //   user,
-      // });
+      socket.current.emit(ACTIONS.JOIN, {
+        roomId,
+        user,
+      });
     };
 
     chatInitialize();
