@@ -1,3 +1,4 @@
+import freeice from "freeice";
 import { useCallback, useEffect, useRef } from "react";
 import { ACTIONS } from "../actions";
 import { socketInit } from "../socket";
@@ -47,61 +48,61 @@ export const useWebRTC = (roomId, user) => {
       }
 
       // Handle the peer connection
-      // const handleNewPeer = async ({
-      //   peerId,
-      //   createOffer,
-      //   user: remoteUser,
-      // }) => {
-      //   if (peerId in connections.current) {
-      //     return console.log(
-      //       `You are already connected with ${peerId} (${user.name})`
-      //     );
-      //   }
+      const handleNewPeer = async ({
+        peerId,
+        createOffer,
+        user: remoteUser,
+      }) => {
+        if (peerId in connections.current) {
+          return console.log(
+            `You are already connected with ${peerId} (${user.name})`
+          );
+        }
 
-      //   // Store it to connections
-      //   connections.current[peerId] = new RTCPeerConnection({
-      //     iceServers: freeice(),
-      //   });
+        // Store it to connections
+        connections.current[peerId] = new RTCPeerConnection({
+          iceServers: freeice(),
+        });
 
-      //   // Handle new ice candidate on this peer connection
-      //   connections.current[peerId].onicecandidate = (event) => {
-      //     socket.current.emit(ACTIONS.RELAY_ICE, {
-      //       peerId,
-      //       icecandidate: event.candidate,
-      //     });
-      //   };
+        // Handle new ice candidate on this peer connection
+        connections.current[peerId].onicecandidate = (event) => {
+          socket.current.emit(ACTIONS.RELAY_ICE, {
+            peerId,
+            icecandidate: event.candidate,
+          });
+        };
 
-      //   // Handle on track event on this connection
-      //   connections.current[peerId].ontrack = ({ streams: [remoteStream] }) => {
-      //     addNewClient({ ...remoteUser, muted: true }, () => {
-      //       // get current users mute info
-      //       const currentUser = clientsRef.current.find(
-      //         (client) => client.id === user.id
-      //       );
-      //       if (currentUser) {
-      //         socket.current.emit(ACTIONS.MUTE_INFO, {
-      //           userId: user.id,
-      //           roomId,
-      //           isMute: currentUser.muted,
-      //         });
-      //       }
-      //       if (audioElements.current[remoteUser.id]) {
-      //         audioElements.current[remoteUser.id].srcObject = remoteStream;
-      //       } else {
-      //         let settled = false;
-      //         const interval = setInterval(() => {
-      //           if (audioElements.current[remoteUser.id]) {
-      //             audioElements.current[remoteUser.id].srcObject = remoteStream;
-      //             settled = true;
-      //           }
+        // Handle on track event on this connection
+        connections.current[peerId].ontrack = ({ streams: [remoteStream] }) => {
+          addNewClient({ ...remoteUser, muted: true }, () => {
+            // get current users mute info
+            const currentUser = clientsRef.current.find(
+              (client) => client.id === user.id
+            );
+            if (currentUser) {
+              socket.current.emit(ACTIONS.MUTE_INFO, {
+                userId: user.id,
+                roomId,
+                isMute: currentUser.muted,
+              });
+            }
+            if (audioElements.current[remoteUser.id]) {
+              audioElements.current[remoteUser.id].srcObject = remoteStream;
+            } else {
+              let settled = false;
+              const interval = setInterval(() => {
+                if (audioElements.current[remoteUser.id]) {
+                  audioElements.current[remoteUser.id].srcObject = remoteStream;
+                  settled = true;
+                }
 
-      //           if (settled) {
-      //             clearInterval(interval);
-      //           }
-      //         }, 300);
-      //       }
-      //     });
-      //   };
+                if (settled) {
+                  clearInterval(interval);
+                }
+              }, 300);
+            }
+          });
+        };
 
         // Add connection to peer connections track
         localMediaStreams.current.getTracks().forEach((track) => {
@@ -226,38 +227,38 @@ export const useWebRTC = (roomId, user) => {
     audioElements.current[userId] = instance;
   };
 
-  // const handleMute = (isMute, userId) => {
-  //   let settled = false;
+  const handleMute = (isMute, userId) => {
+    let settled = false;
 
-  //   if (userId === user.id) {
-  //     let interval = setInterval(() => {
-  //       if (localMediaStreams.current) {
-  //         localMediaStreams.current.getTracks()[0].enabled = !isMute;
-  //         if (isMute) {
-  //           socket.current.emit(ACTIONS.MUTE, {
-  //             roomId,
-  //             userId: user.id,
-  //           });
-  //         } else {
-  //           socket.current.emit(ACTIONS.UN_MUTE, {
-  //             roomId,
-  //             userId: user.id,
-  //           });
-  //         }
-  //         settled = true;
-  //       }
-  //       if (settled) {
-  //         clearInterval(interval);
-  //       }
-  //     }, 200);
+    if (userId === user.id) {
+      let interval = setInterval(() => {
+        if (localMediaStreams.current) {
+          localMediaStreams.current.getTracks()[0].enabled = !isMute;
+          if (isMute) {
+            socket.current.emit(ACTIONS.MUTE, {
+              roomId,
+              userId: user.id,
+            });
+          } else {
+            socket.current.emit(ACTIONS.UN_MUTE, {
+              roomId,
+              userId: user.id,
+            });
+          }
+          settled = true;
+        }
+        if (settled) {
+          clearInterval(interval);
+        }
+      }, 200);
 
-  //     // console.log((localMediaStreams.current.getTracks()[0].enabled = !isMute));
-  //   }
-  // };
+      // console.log((localMediaStreams.current.getTracks()[0].enabled = !isMute));
+    }
+  };
 
   return {
     clients,
     provideRef,
-    // handleMute,
+    handleMute,
   };
 };
