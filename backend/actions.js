@@ -7,6 +7,8 @@ const ACTIONS = {
   ICE_CANDIDATE: "ice-candidate",
   SESSION_DESCRIPTION: "session-description",
   REMOVE_PEER: "remove-peer",
+  MUTE: "mute",
+  UN_MUTE: "unmute",
 };
 
 module.exports = ACTIONS;

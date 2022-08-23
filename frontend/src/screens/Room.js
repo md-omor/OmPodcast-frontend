@@ -7,10 +7,10 @@ import { getRoom } from "../http";
 const Room = () => {
   const { id: roomId } = useParams();
   const user = useSelector((state) => state.auth.user);
-  const { clients, provideRef } = useWebRTC(roomId, user);
+  const { clients, provideRef, handleMute } = useWebRTC(roomId, user);
   const navigate = useNavigate();
   const [room, setroom] = useState(null);
-  const { roomName } = useSelector((state) => state.rooms);
+  const [isMute, setisMute] = useState(true);
 
   const leaveRoom = () => {
     navigate("/rooms", {
@@ -19,14 +19,24 @@ const Room = () => {
   };
 
   useEffect(() => {
+    handleMute(isMute, user.id);
+  }, [isMute]);
+
+  useEffect(() => {
     const fetchRoom = async () => {
       const { data } = await getRoom(roomId);
-      setroom((prev) => data);
+      setroom(data);
       console.log(data);
     };
 
     fetchRoom();
   }, [roomId]);
+
+  const handleMuteClick = (clientId) => {
+    if (clientId !== user.id) return;
+
+    setisMute((prev) => !prev);
+  };
 
   return (
     <div>
@@ -73,17 +83,15 @@ const Room = () => {
                     alt="avatar"
                     className="w-full h-full rounded-[50%]"
                   />
-                  <button className="absolute bottom-0 -right-2 w-8 h-8 box-content rounded-[30px] p-1 shadow-[rgba(0,0,0,0.25)]">
-                    {/* <img
-                      src="/assets/mic.png"
-                      alt="mic-mute"
-                      className=""
-                    /> */}
-                    <img
-                      src="/assets/mic-mute.svg"
-                      alt="mic-mute"
-                      className=""
-                    />
+                  <button
+                    onClick={() => handleMuteClick(client.id)}
+                    className="absolute bottom-0 -right-2 w-8 h-8 box-content rounded-[30px] p-1 shadow-[rgba(0,0,0,0.25)]"
+                  >
+                    {client.muted ? (
+                      <img className="" src="/assets/mic-mute.png" alt="mic" />
+                    ) : (
+                      <img className="" src="/assets/mic.png" alt="mic" />
+                    )}
                   </button>
                 </div>
                 <h1 className="font-semi  bold font-Oxanium mt-3">

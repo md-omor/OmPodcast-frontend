@@ -27,7 +27,6 @@ class RoomsCntroller {
   }
 
   async show(req, res) {
-    // const room = await roomService.getRoom(req.params.roomId);
     const room = await roomService.getRoom(req.params.roomId);
     return res.status(200).json(room);
   }
