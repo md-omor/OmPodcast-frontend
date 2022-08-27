@@ -2,11 +2,11 @@ import React from "react";
 
 const Card = ({ title, icon, children }) => {
   return (
-    <div className="bg-zinc-900 lg:w-[650px] w-full h-[467px] py-16 flex flex-col items-center rounded-lg">
-      <div className="flex">
+    <div className="bg-zinc-900 lg:w-[650px] w-full lg:h-[467px] py-16 flex flex-col items-center rounded-lg">
+      <div className="flex items-center">
         {icon && <img src={`/assets/${icon}.svg`} alt="icons" />}
         {title && (
-          <h1 className="font-Jost text-2xl font-semibold ml-3 capitalize">
+          <h1 className="font-Jost lg:text-2xl text-base font-semibold ml-3 capitalize">
             {title}
           </h1>
         )}

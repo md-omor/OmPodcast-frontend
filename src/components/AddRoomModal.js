@@ -27,7 +27,7 @@ const AddRoomModal = ({ onClose }) => {
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.6)] flex items-center justify-center ">
-      <div className="w-[50%] max-w-[500px] bg-zinc-900 rounded-xl relative">
+      <div className="lg:w-[50%] max-w-[500px] bg-zinc-900 rounded-xl relative">
         <button className="absolute right-8 top-10" onClick={onClose}>
           <img src="/assets/close.svg" alt="close" />
         </button>

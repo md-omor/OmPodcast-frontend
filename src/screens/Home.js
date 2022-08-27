@@ -15,7 +15,7 @@ const Home = () => {
     <div className="container mx-auto px-4 h-[80vh]">
       <div className="w-full flex justify-center items-center h-full">
         <Card title="Welcome to the awesome OM Podcast!" icon="home_icon">
-          <p className="font-Jost text-lg font-medium text-[#C4C5C5] pt-7 lg:w-[393px] w-full lg:px-0 px-[120px] text-center">
+          <p className="font-Jost text-lg font-medium text-[#C4C5C5] pt-7 lg:w-[393px] w-full  text-center">
             We’re working hard to get OM Podcast ready for everyone! While we
             wrap up the finishing youches, we’re adding people gradually to make
             sure nothing breaks :)

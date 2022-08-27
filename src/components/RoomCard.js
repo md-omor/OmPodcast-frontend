@@ -32,7 +32,7 @@ const RoomCard = ({ room }) => {
         </div>
         <div className="ml-[100px] names">
           {room.speakers.map(({ name, id }) => (
-            <div className="flex items-center" key={id}>
+            <div className="flex items-center" key={name}>
               <span className="pb-1 inline-block mr-1 font-medium font-Oxanium">
                 {name}
               </span>
@@ -42,8 +42,12 @@ const RoomCard = ({ room }) => {
         </div>
       </div>
       <div className="items-center justify-end flex">
-        <span className="font-bold font-Oxanium mr-1 ">{room.totalPeople}</span>
-        <img className="initial" src="/assets/user-icon.png" alt="user" />
+        <div className="flex justify-center items-center">
+          <span className="font-bold text-sm lg:text-base font-Oxanium mr-1 mt-1">
+            {room.speakers.length}
+          </span>
+          <img className="initial" src="/assets/user-icon.png" alt="user" />
+        </div>
       </div>
     </div>
   );

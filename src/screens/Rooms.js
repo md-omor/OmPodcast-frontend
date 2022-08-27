@@ -26,21 +26,21 @@ const Rooms = () => {
   return (
     <>
       <div className="container mx-auto">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap lg:justify-between justify-center">
           <div className="flex items-center">
-            <span className="text-xl font-bold font-Oxanium ">
+            <span className="lg:text-xl text-base font-bold font-Oxanium ">
               All voice rooms
             </span>
-            <div className="bg-[#262626] ml-5 flex items-center py-0 px-3 min-w-[300px] rounded-3xl">
+            <div className="bg-[#262626] ml-5 flex items-center py-0 px-3 lg:min-w-[300px]  rounded-3xl">
               <img src="assets/search.svg" alt="search" />
               <input
                 type="text"
-                className="bg-transparent border-none outline-none p-2 text-white w-full font-semibold font-Oxanium"
+                className="bg-transparent border-none outline-none p-2 text-white lg:w-full w-9/12 font-semibold font-Oxanium"
                 placeholder="search rooms"
               />
             </div>
           </div>
-          <div className="">
+          <div className="lg:m-0 mt-5">
             <button
               onClick={openModal}
               className="flex items-center bg-[#20bd5f] px-5 py-1 rounded-3xl cursor-pointer text-white font-bold font-Oxanium hover:bg-[#128d4e] transition-all duration-200 ease-in-out"
@@ -51,7 +51,7 @@ const Rooms = () => {
           </div>
         </div>
 
-        <div className="flex justify-start flex-wrap mt-[60px]">
+        <div className="flex lg:justify-start justify-center flex-wrap mt-[60px]">
           {rooms.map((room) => (
             <RoomCard key={room.id} room={room} />
           ))}
