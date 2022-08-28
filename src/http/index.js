@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base_url = "http://localhost:5500";
+const base_url = "https://ompodcast-backend.herokuapp.com";
 
 const api = axios.create({
   baseURL: base_url,

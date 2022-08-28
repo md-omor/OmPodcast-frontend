@@ -28,7 +28,7 @@ const StepName = ({ onNext }) => {
             fullwidth="false"
           />
           <p className="text-[#C4C5C5] font-Jost font-medium text-sm mt-5 w-[301px] text-center">
-            People use real names at codershouse :)
+            People use real names at ompodcast :)
           </p>
           <Button text="Next" onClick={nextStep} />
         </Card>

@@ -2,7 +2,7 @@ import React from "react";
 
 const Card = ({ title, icon, children }) => {
   return (
-    <div className="bg-zinc-900 lg:w-[650px] w-full lg:h-[467px] py-16 flex flex-col items-center rounded-lg">
+    <div className="bg-[#16161c59] lg:w-[650px] w-full lg:h-[467px] py-16 flex flex-col items-center rounded-lg">
       <div className="flex items-center">
         {icon && <img src={`/assets/${icon}.svg`} alt="icons" />}
         {title && (

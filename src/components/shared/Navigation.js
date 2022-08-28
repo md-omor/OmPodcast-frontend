@@ -1,4 +1,5 @@
 import React from "react";
+import { FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../http";
@@ -28,7 +29,9 @@ const Navigation = () => {
             {isAuth && (
               <>
                 {" "}
-                <h3>{user && user?.name}</h3>
+                <h3 className="font-Oxanium text-xl font-semibold">
+                  {user && user?.name}
+                </h3>
                 <Link to="/">
                   <img
                     className="avatar"
@@ -47,7 +50,7 @@ const Navigation = () => {
                 className="border-none outline-none cursor-pointer"
                 onClick={logoutUser}
               >
-                <img src="/assets/logout.png" alt="logout" />
+                <FiLogOut className="text-2xl ml-2" />
               </button>
             )}
           </div>

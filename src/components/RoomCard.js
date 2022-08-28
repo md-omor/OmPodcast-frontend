@@ -11,7 +11,7 @@ const RoomCard = ({ room }) => {
           replace: true,
         })
       }
-      className="bg-[#1d1d1d] p-5 rounded-3xl cursor-pointer mb-8 mr-6 w-[350px]"
+      className="bg-[#32363c6b] p-5 rounded-3xl cursor-pointer mb-8 mr-6 w-[350px]"
     >
       <h3 className="font-bold font-Oxanium">{room.topic}</h3>
 

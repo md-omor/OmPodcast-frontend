@@ -23,6 +23,18 @@ const Rooms = () => {
     setshowModal(true);
   };
 
+  // const searchHandle = async (e) => {
+  //   let key = e.target.value;
+
+  //   if (key) {
+  //     let result = await axios.get(`/api/rooms/${key}`);
+  //     result = await result.json();
+  //     if (result) {
+  //       setrooms(result);
+  //     }
+  //   }
+  // };
+
   return (
     <>
       <div className="container mx-auto">
@@ -31,12 +43,13 @@ const Rooms = () => {
             <span className="lg:text-xl text-base font-bold font-Oxanium ">
               All voice rooms
             </span>
-            <div className="bg-[#262626] ml-5 flex items-center py-0 px-3 lg:min-w-[300px]  rounded-3xl">
+            <div className="bg-[#32363c6b] ml-5 flex items-center py-0 px-3 lg:min-w-[300px]  rounded-3xl">
               <img src="assets/search.svg" alt="search" />
               <input
                 type="text"
                 className="bg-transparent border-none outline-none p-2 text-white lg:w-full w-9/12 font-semibold font-Oxanium"
                 placeholder="search rooms"
+                // onChange={searchHandle}
               />
             </div>
           </div>

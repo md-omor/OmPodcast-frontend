@@ -49,7 +49,7 @@ const Room = () => {
         </button>
       </div>
 
-      <div className="roomPeopleWrap bg-zinc-800">
+      <div className="roomPeopleWrap bg-[#25282e]">
         <div className="flex items-center justify-between">
           <h1 className="font-bold font-Oxanium text-xl">{room?.topic}</h1>
           <div className="flex ">
