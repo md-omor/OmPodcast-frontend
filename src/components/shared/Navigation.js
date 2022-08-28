@@ -29,7 +29,7 @@ const Navigation = () => {
             {isAuth && (
               <>
                 {" "}
-                <h3 className="font-Oxanium text-xl font-semibold">
+                <h3 className="font-Jost text-xl font-medium ">
                   {user && user?.name}
                 </h3>
                 <Link to="/">

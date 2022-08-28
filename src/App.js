@@ -95,6 +95,8 @@ const SemiProtectedRoute = ({ children }) => {
 const ProtectedRoute = ({ children }) => {
   const { user, isAuth } = useSelector((state) => state.auth);
 
+  console.log(user);
+
   const location = useLocation();
   return !isAuth ? (
     <Navigate to="/" state={{ from: location }} replace />
