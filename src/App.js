@@ -14,6 +14,7 @@ import Rooms from "./screens/Rooms";
 function App() {
   // call refresh endpoint
   const { loading } = useLoadingWithRefresh();
+
   return loading ? (
     <Loader message="Activation in progress ..." />
   ) : (

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   roomName: "",
-  // avatar: "",
+  name: "",
 };
 
 export const roomSlice = createSlice({
@@ -11,7 +11,6 @@ export const roomSlice = createSlice({
   reducers: {
     getRoomsName: (state, action) => {
       // const { roomName } = action.payload;
-      const { topic } = action.payload;
       state.roomName = action.payload;
     },
   },
