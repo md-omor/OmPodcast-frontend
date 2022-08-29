@@ -1,24 +1,22 @@
 import axios from "axios";
 
-const base_url = "http://localhost:5500";
-
 const api = axios.create({
-  baseURL: base_url,
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
     Accept: "application/json",
   },
 });
-// export default api;
 
-export const sendOtp = (data) => axios.post(`/api/send-otp`, data);
-export const verifyOtp = (data) => axios.post(`/api/verify-otp`, data);
-export const activate = (data) => axios.post(`/api/activate`, data);
-export const logout = () => axios.post(`/api/logout`);
-export const createRoom = (data) => axios.post(`/api/rooms`, data);
-export const getAllRooms = () => axios.get(`/api/rooms`);
-export const getRoom = (roomId) => axios.get(`/api/rooms/${roomId}`);
+// List of all the endpoints
+export const sendOtp = (data) => api.post(`/api/send-otp`, data);
+export const verifyOtp = (data) => api.post(`/api/verify-otp`, data);
+export const activate = (data) => api.post(`/api/activate`, data);
+export const logout = () => api.post(`/api/logout`);
+export const createRoom = (data) => api.post(`/api/rooms`, data);
+export const getAllRooms = () => api.get(`/api/rooms`);
+export const getRoom = (roomId) => api.get(`/api/rooms/${roomId}`);
 
 // Interceptors
 api.interceptors.response.use(
@@ -34,7 +32,7 @@ api.interceptors.response.use(
     ) {
       originalRequest.isRetry = true;
       try {
-        await axios.get(`${base_url}/api/refresh`, {
+        await axios.get(`${process.env.REACT_APP_API_URL}/api/refresh`, {
           withCredentials: true,
         });
 
@@ -46,3 +44,5 @@ api.interceptors.response.use(
     throw error;
   }
 );
+
+export default api;

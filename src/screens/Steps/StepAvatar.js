@@ -36,7 +36,7 @@ const StepAvatar = ({ onNext }) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error, "Avatar field required");
     } finally {
       setLoading(false);
     }
